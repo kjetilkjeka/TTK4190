@@ -101,6 +101,7 @@ Where $K_p$ and $K_d$ are positive definite diagonal matrices.
 Even though the system is stable, the euler angle representation got a singularity. This means that the control system won't work at and close to the singular point.
 
 
+
 \section*{Task 2.2}
 The intro to assignment 1 states that there is not a explicit way we have to model the distrutbance and if the controller from 2.1 works then everything is good. Since a PD controller is a special case of a PID controller ($K_i = 0$) i consider this task fully completed by using the PD from task 2.1 as long as ``it works''. 
 
@@ -123,5 +124,7 @@ ans =
    -0.1006
 
 \end{lstlisting}
+The two controllers seems both to be efficient. The quaternion controller seems to be doing a better job but this might just as well be because of tuning. The quaternion doesn't have the same singularity has euler angles which makes it attractive for a satelite.
+
 
 \end{document}
