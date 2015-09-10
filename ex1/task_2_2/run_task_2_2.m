@@ -42,9 +42,10 @@ for i = 1:N
 end
 
 % do plotting
+figure(1);
 hold on;
+title('Euler angles - noise');
 plot(t, theta(1, 1:N+1));
-figure();
 plot(t, theta(2, 1:N+1));
-figure();
 plot(t, theta(3, 1:N+1));
+legend('phi', 'theta', 'psi');

@@ -53,15 +53,18 @@ end
 
 % do plotting
 hold on;
+figure(1);
+title('Euler angles');
 plot(t, theta(1, 1:N+1));
-figure();
 plot(t, theta(2, 1:N+1));
-figure();
 plot(t, theta(3, 1:N+1));
-figure()
+legend('phi', 'theta', 'psi');
 
+
+figure(2)
+hold on;
+title('Euler angles - singularity');
 plot(t, theta_singular(1, 1:N+1));
-figure()
 plot(t, theta_singular(2, 1:N+1));
-figure()
 plot(t, theta_singular(3, 1:N+1));
+legend('phi', 'theta', 'psi');

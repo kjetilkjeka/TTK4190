@@ -71,18 +71,26 @@ end
 
 
 % do plotting
-hold on;
 figure(1)
+hold on;
+title('Quaternion controller represented in euler angles');
 plot(t, theta(1, 1:N+1));
-figure(2);
 plot(t, theta(2, 1:N+1));
-figure(3);
 plot(t, theta(3, 1:N+1));
+legend('phi', 'theta', 'psi');
 
-figure(4);
+figure(2);
+hold on;
+title('phi error');
 plot(t, error_q(1, 1:N+1), t, error_e(1, 1:N+1));
-figure(5);
+legend('quaternions', 'euler angles');
+figure(3);
+hold on;
+title('theta error');
 plot(t, error_q(2, 1:N+1), t, error_e(2, 1:N+1));
-figure(6);
+legend('quaternions', 'euler angles');
+figure(4);
+hold on;
+title('psi error');
 plot(t, error_q(3, 1:N+1), t, error_e(3, 1:N+1));
-
+legend('quaternions', 'euler angles');
