@@ -1,6 +1,9 @@
 \documentclass[11pt]{article}
 
 \usepackage{amsmath, amssymb}
+\usepackage{listings}
+\usepackage{gensymb}
+\usepackage[english]{babel}
 
 \begin{document}
 \section*{Task 1.1}
@@ -75,5 +78,41 @@ Euler angle's are highly intuitive but has the drawback of a singularity. Quater
 \\[+1cm] TODO write about rotation matrices
 
 \section{Task 2.1}
+Given the system
+\[I_g \dot \omega - (I_g \omega) \times \omega = \tau \]
+I wish to design a controller outputing $\tau$ which will make the system lyupnov stable. Choosing the lyupnov candidate function as:
+\[V = \frac{1}{2} \omega^T I_g \omega + \frac{1}{2} \dot \tilde \theta^T K_p \tilde \theta \]
+This function  positive definite since $I_g$ are positive definite and $K_p$ are chosen to be positive definite.
+\begin{eqnarray*}
+\dot V &=& \frac{1}{2} [ \dot \omega^T I_g \omega + \omega^T I_g \dot \omega + \dot \tilde \theta^T K_p \tilde \theta + \tilde \theta^T K_p \dot \tilde \theta ] \\
+&=& \frac{1}{2} [ \dot \omega^T I_g \omega + \omega^T I_g \dot \omega + \omega^T T^T K_p \tilde \theta + \tilde \theta^T K_p T \omega ] \\
+&=& \frac{1}{2} [\omega^T ( I_g \dot \omega + T^T K_p \tilde \theta) + (\dot \omega^T I_g + \tilde \theta^T K_p T) \omega ] \\
+&=& \frac{1}{2} [\omega^T (I_g \dot \omega + T^T K_p \tilde \omega) + (I_g \dot \omega + T^T K_p \tilde \omega)^T \omega ] 
+\end{eqnarray*}
+Since $I_g$ is a diagonal matrix. And $K_d$ will be chosen to be a diagonal matrix. If $I_g \dot \omega + T^T K_p \tilde \omega = - K_d \omega$, where $K_d$ is a positive definit diagonal matrix then 
+\[\dot V = - \omega^T K_d \omega \]
+and thus negative definite and the system will be stable. Meaning for the system to be stable, it is sufficient to have $\tau$ on the form
+\[ \tau = -(T^T K_p \tilde \omega + K_d \omega + (I_g \omega) \times \omega) \]
+Where $K_p$ and $K_d$ are positive definite diagonal matrices.
+
+
+
+\section{Task 2.2}
+
+\section{Task 3.1}
+Now i wish to implement attitude control based on quaternions. I wish to use the setpoint given in euler angles:
+\[\Theta_d = \begin{bmatrix} 10\degree && 20\degree && -10\degree \end{bmatrix} \]
+I will use matlab and mss toolbox to calculate the setpoint in quaternions
+\begin{lstlisting}[frame=single]
+>> degree = @(rad) rad*180/pi;
+>> euler2q(degree(10), degree(20), degree(-10))
+
+ans =
+
+   -0.0340
+    0.6035
+    0.5201
+   -0.6035
+\end{lstlisting}
 
 \end{document}
