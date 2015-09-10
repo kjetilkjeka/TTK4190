@@ -19,6 +19,7 @@ omega_dot = @(omega, tau) inv(Ig)*(tau + cross( (Ig * omega), omega));
 % controller constants
 rad = @(degree) degree/180*pi;
 theta_d = [rad(10); rad(20); rad(-10)];
+theta_singular_d = [pi/2; pi/2; pi/2];
 Kp = [10 0 0; 0 10 0; 0 0 10];
 Kd = [80 0 0; 0 80 0; 0 0 80];
 
@@ -34,6 +35,15 @@ theta(1:3, 1) = [0; 0; 0];
 omega(1:3, 1) = [0; 0; 0];
 tau(1:3, 1) = [0; 0; 0];
 
+theta_singular(1:3, 1) = [0; 0; 0];
+omega_singular(1:3, 1) = [0; 0; 0];
+tau_singular(1:3, 1) = [0; 0; 0];
+
+for i = 1:N
+    theta_singular(1:3, i+1) = euler2( theta_dot( theta_singular(1:3, i), omega_singular(1:3, i) ), theta_singular(1:3, i), h);
+    omega_singular(1:3, i+1) = euler2(omega_dot(omega_singular(1:3, i), tau_singular(1:3, i)), omega_singular(1:3, i), h);
+    tau_singular(1:3, i+1) = u(theta_singular(1:3, i), theta_singular_d, omega_singular(1:3, i) );
+end
 
 for i = 1:N
     theta(1:3, i+1) = euler2( theta_dot( theta(1:3, i), omega(1:3, i) ), theta(1:3, i), h);
@@ -48,3 +58,10 @@ figure();
 plot(t, theta(2, 1:N+1));
 figure();
 plot(t, theta(3, 1:N+1));
+figure()
+
+plot(t, theta_singular(1, 1:N+1));
+figure()
+plot(t, theta_singular(2, 1:N+1));
+figure()
+plot(t, theta_singular(3, 1:N+1));
