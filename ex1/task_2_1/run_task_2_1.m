@@ -10,11 +10,11 @@ Ig = m*r^2*eye(3);
 omega_dot = @(omega, tau) inv(Ig)*(tau + cross( (Ig * omega), omega));
 
 % controller constants
-omega_d = [2; 0; 1];
+omega_d = [2; 0.5; 1];
 d = 2;
 Kp = [100 0 0; 0 100 0; 0 0 100];
 %Kd = @(omega)[0 0 0; 0 0 0; 0 0 0];
-Kd = @(omega) - Ig + (Kp - Smtrx(Ig * omega) * (1/d));
+Kd = @(omega) - Ig + (Kp - Smtrx(Ig * omega) ) * (1/d);
 
 % controller dynamics
 u = @(omega_d, omega, omega_dot) Kp*(omega_d - omega) - Kd(omega)*omega_dot; 
