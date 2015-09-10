@@ -17,7 +17,8 @@ theta_dot = @(theta, omega) Trans(theta) * omega;
 omega_dot = @(omega, tau) inv(Ig)*(tau + cross( (Ig * omega), omega));
 
 % controller constants
-theta_d = [2; 0.5; 1];
+rad = @(degree) degree/180*pi;
+theta_d = [rad(10); rad(20); rad(-10)];
 Kp = [10 0 0; 0 10 0; 0 0 10];
 Kd = [80 0 0; 0 80 0; 0 0 80];
 

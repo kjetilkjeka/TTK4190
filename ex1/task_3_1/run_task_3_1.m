@@ -57,10 +57,32 @@ for i = 1:N
     theta(1:3, i+1) = q2euler(q(1:4, i+1));
 end
 
+
+
+% ok now the tracking error of 3.1 and 2.1 should be plotted together
+for i = 1:(N+1)
+    error_q(1:3, i) = q2euler(q_d) - theta(1:3, i);
+end
+run('../task_2_1/run_task_2_1.m');
+delete(findall(0,'Type','figure')); % kill figures plotted fomr 2.1
+for i = 1:(N+1)
+    error_e(1:3, i) = theta_d - theta(1:3, i);
+end
+
+
 % do plotting
 hold on;
+figure(1)
 plot(t, theta(1, 1:N+1));
-figure();
+figure(2);
 plot(t, theta(2, 1:N+1));
-figure();
+figure(3);
 plot(t, theta(3, 1:N+1));
+
+figure(4);
+plot(t, error_q(1, 1:N+1), t, error_e(1, 1:N+1));
+figure(5);
+plot(t, error_q(2, 1:N+1), t, error_e(2, 1:N+1));
+figure(6);
+plot(t, error_q(3, 1:N+1), t, error_e(3, 1:N+1));
+
