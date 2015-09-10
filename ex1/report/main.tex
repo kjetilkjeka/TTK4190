@@ -3,9 +3,13 @@
 \usepackage{amsmath, amssymb}
 \usepackage{listings}
 \usepackage{gensymb}
-\usepackage[english]{babel}
+
+\author{Kjetil Kjeka}
+\date{\today}
+\title{Navigation and control assignment 1}
 
 \begin{document}
+\maketitle
 \section*{Task 1.1}
 The kinimatics of parameteres from body in NED is given by 
 \[ \dot{p} = U(Q) v \]
@@ -74,8 +78,7 @@ m_g &=& \frac{^i d}{dt}(I_g \omega_{b/i}) \\
 Where $I_g = I_{CG}$ is the intertia matrix in CG, $\omega_{b/n} = \omega$ is the rotational velocity of the satelite refered to NED, and $m_g = \tau$ is the torque which in the ideal noiseless case is the control input. As stated earlyer, NED is assumed to be inertial in order for this model to be valid.
 
 \section*{Task 1.3}
-Euler angle's are highly intuitive but has the drawback of a singularity. Quaternions doesn't got this singularity but are not so intuitive and introduce some numerical challenges in keeping them normalized. Rotation matrices require less computation to apply since both quaternions and euler angles needs to be converted to a rotation matrix, but 
-\\[+1cm] TODO write about rotation matrices
+Euler angle's are highly intuitive but has the drawback of a singularity. Quaternions doesn't got this singularity but are not so intuitive and introduce some numerical challenges in keeping them normalized. Rotation matrices require less computation to apply since both quaternions and euler angles needs to be converted to a rotation matrix, but rotation matrices doesn't give a very much intuitive description and therefore it might be needed to convert it into euler angles anyway.
 
 \section*{Task 2.1}
 Given the system
@@ -95,10 +98,11 @@ and thus negative definite and the system will be stable. Meaning for the system
 \[ \tau = -(T^T K_p \tilde \omega + K_d \omega + (I_g \omega) \times \omega) \]
 Where $K_p$ and $K_d$ are positive definite diagonal matrices.
 
+Even though the system is stable, the euler angle representation got a singularity. This means that the control system won't work at and close to the singular point.
 
 
 \section*{Task 2.2}
-The intro to assignment 1 states that there is not a explicit way we have to model the distrutbance and if the controller from 2.1 works then everything is good. Since a PD controller is a special case of a PID controller (K_i = 0) i consider this task fully completed by using the PD from task 2.1 as long as ``it works''. 
+The intro to assignment 1 states that there is not a explicit way we have to model the distrutbance and if the controller from 2.1 works then everything is good. Since a PD controller is a special case of a PID controller ($K_i = 0$) i consider this task fully completed by using the PD from task 2.1 as long as ``it works''. 
 
 The noise from the solar wind is modeled with the matlab rand function with a mean value as 0. The controller from task 2.1 works with this kind of noise.
 
@@ -108,15 +112,16 @@ Now i wish to implement attitude control based on quaternions. I wish to use the
 \[\Theta_d = \begin{bmatrix} 10\degree && 20\degree && -10\degree \end{bmatrix} \]
 I will use matlab and mss toolbox to calculate the setpoint in quaternions
 \begin{lstlisting}[frame=single]
->> degree = @(rad) rad*180/pi;
->> euler2q(degree(10), degree(20), degree(-10))
+>> rad = @(degree) degree/180*pi;
+>> euler2q(rad(10), rad(20), rad(-10))
 
 ans =
 
-   -0.0340
-    0.6035
-    0.5201
-   -0.6035
+    0.9760
+    0.1006
+    0.1648
+   -0.1006
+
 \end{lstlisting}
 
 \end{document}
