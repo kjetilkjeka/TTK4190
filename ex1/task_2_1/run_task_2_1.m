@@ -10,16 +10,17 @@ Ig = m*r^2*eye(3);
 omega_dot = @(omega, tau) inv(Ig)*(tau + cross( (Ig * omega), omega));
 
 % controller constants
-omega_d = [2; 0; 0];
-Kp = [1 0 0; 0 1 0; 0 0 1];
+omega_d = [2; 0; 1];
+d = 2;
+Kp = [100 0 0; 0 100 0; 0 0 100];
 %Kd = @(omega)[0 0 0; 0 0 0; 0 0 0];
-Kd = @(omega) Kp - Ig - Smtrx(Ig * omega);
+Kd = @(omega) - Ig + (Kp - Smtrx(Ig * omega) * (1/d));
 
 % controller dynamics
 u = @(omega_d, omega, omega_dot) Kp*(omega_d - omega) - Kd(omega)*omega_dot; 
 
 % simulation, euler method
-h = 0.1;
+h = 0.01;
 T = 50;
 t = [0:h:T];
 N = T/h;
