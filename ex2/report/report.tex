@@ -1,0 +1,91 @@
+\documentclass[11pt]{article}
+
+\usepackage[norsk]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx, float}
+\usepackage{pstricks-add}
+
+
+\author{Kjetil Kjeka}
+\title{}
+\date{\today}
+
+
+%Slik at matriser kan defineres med linjer
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+
+
+\begin{document}
+\section{Open-loop analysis}
+\subsection{Dutch-roll mode}
+The complete linear model is given by $\dot{x} = A x + B u$ where \[A = \begin{bmatrix}
+-0.3220 & 0.0640 & 0.0364 & -0.9917 & 0.0003 & 0.0008 \\
+0 & 0 & 1 & -0.0037 & 0 & 0 \\
+-30.6492 & 0 & -3.6784 & 0.6646 & -0.7333 & 0.1315 \\
+8.5396 & 0& -0.0254 & -0.4764 & -0.0319 & -0.0620 \\
+0 & 0 & 0 & 0 & -20.2 & 0 \\
+0 & 0 & 0 & 0 & 0 & -20.2
+\end{bmatrix} \]
+and
+\[x = \begin{bmatrix}
+\beta \\
+\phi \\
+p \\
+r \\
+\delta_a \\
+\delta_r 
+\end{bmatrix} \]
+
+But in the dutch roll mode only sideslip and yaw is looked upon, the model is given by $\dot{x_{dr}} = A_{dr} x_{dr} + B_{dr} \delta_r $ Where 
+\[ A_{dr} = \begin{bmatrix}
+-0.3220 & -0.9917 \\
+8.5396 & -0.4364
+\end{bmatrix} = \begin{bmatrix}
+Y_v & \frac{Y_r}{V_a^* \cos{\beta^*}} \\
+N_v V_a^* \cos{\beta^*} & N_r
+\end{bmatrix} \]
+Meaning that the charecteristic equation is given by
+\[ s^2 + (-Y_v + N_r)s + (Y_v N_r - N_v Y_r) \]
+Since the charecteristic equation of a general second order dynamic system is
+\[s^2 + 2 \gamma \omega_0 s + \omega_0^2\]
+\begin{align*}
+\omega_0 &= \sqrt{Y_v N_r - N_v Y_r} &= 2.936 \\
+\gamma &= \frac{1}{2} \frac{-Y_v - N_r}{\omega_0} &= 0.1292
+\end{align*}
+Dutch-roll mode is an aircraft motion consisting of sideslip and yaw. Depending on aircraft design this motion will be damped out to different degrees. The feeling of dutch roll has been described as ``a combination of tail-wagging and rocking from side to side''
+
+\subsection{Spiral divergence}
+The text ask to compute the spiral convergence, I'm assuming that it's the pole of the transfer function $\frac{r}{\delta_a}$, under the spiral-divergene mode assumption, that is to be computed.
+
+It's known from Beard and McLain that: 
+\[\delta_{spiral} = \frac{N_r L_v + N_v L_r}{L_v} \]
+Extracting from the A matrix:
+\begin{align}
+&N_r &= -0.4764 \\
+&\frac{N_v}{L_v} = \frac{8.5396}{-30.6492} &= -0.27862 \\
+&L_r &= 0.6646
+\end{align} 
+Which gives
+\[\delta_{spiral} = N_r - \frac{N_v}{L_v} L_r = -0.4764 - (- 0.27862) \cdot 0.6646 = -0.2912 \]
+
+
+
+\subsection{Roll mode}
+As in spiral convergence it's not completely clear what should be computed but again i assume it's the $\lamba_{rolling}$ under the assumptions of roll-mode. From the theory given in Beard and McLain this can be extracted directly from the $A$ matrix:
+
+\[\delta_{rolling} = L_p = -3.6784\]
+
+
+
+
+
+
+
+\end{document}
