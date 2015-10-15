@@ -2,7 +2,7 @@
 
 \usepackage[norsk]{babel}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath, amssymb, amsthm}
+\usepackage{amsmath, amssymb, amsthm, gensymb}
 \usepackage{graphicx, float}
 \usepackage{pstricks-add}
 
@@ -78,14 +78,54 @@ Which gives
 
 
 \subsection{Roll mode}
-As in spiral convergence it's not completely clear what should be computed but again i assume it's the $\lamba_{rolling}$ under the assumptions of roll-mode. From the theory given in Beard and McLain this can be extracted directly from the $A$ matrix:
+As in spiral convergence it's not completely clear what should be computed but again i assume it's the $\lambda_{rolling}$ under the assumptions of roll-mode. From the theory given in Beard and McLain this can be extracted directly from the $A$ matrix:
 
 \[\delta_{rolling} = L_p = -3.6784\]
 
 
+\section{Autopilot for course hold using succesive loop closure}
+\subsection*{1}
+Since this is the first time $a_{\phi 1}$ and $a_{\phi 2}$ is mentioned in this text and there is doesn't exist as much as a word what these factors are, i will assume they are as given from Figure 6.6 in Beard and McLain. In that case it's easy to see that:
+\begin{align*}
+& p = \frac{a_{\phi 2} }{s + a_{\phi 1} } \delta_a \\
+=> & sp + a_{\phi 1} p = a_{\phi 2} \\
+=> & \dot{p} = -a_{\phi 1} p + a_{phi 2} \lambda_a
+\end{align*}
+Then it's easy to get the coefficients from the $A$ matrix as:
+\begin{align*}
+a_{\phi 1} &= 3.6784 \\
+a_{\phi 2} &= -0.7333
+\end{align*}
 
+\subsection*{2}
+From equation (6.7), (6.8) and (6.9) in Beard and McLain, and the design parameters $\delta^{max}_a = 45 \degree$, $e^{max}_{\phi} = 15 \degree$ and $\zeta_{\phi} = 0.707$
+\begin{align*}
+K_{p \phi} &= \frac{\delta^{max}_a}{e^{max}_{\phi}} \hbox{sign}(a_{\phi 2}) &= -3  \\
+\omega_{n \phi} &= \sqrt{\frac{\delta^{max}_a}{e^{max}_{\phi}} |a_{\phi 2}| } &= 1.4832 \\
+K_{d \phi} &= \frac{2 \zeta_{\phi} \omega_{n \phi} - a_{\phi 1} }{ a_{\phi 2} } &= 2.1562
+\end{align*}
+Since no disturbances is modelled and there is not mentioned wich kind of disturbances that can effect the system no integrator effect will be used on the controller. If there is a constant disturbance, there should be used some kind of integral effect and/or feed forward strategy in this controller.
+\[K_{i \phi} = 0\]
+When designing the course controller it's important to remember that this controller is an outer loop and if it's not chosen ``slow'' enough the assumption that the pitch will follow it's reference won't hold. Beard and McLain states that adequte seperation can be achieved by chosing the design parameter $W_{\chi} > 5$, let $W_{\chi} = 10$
+\[\omega_{n \chi} = \frac{1}{W_{\chi}} \omega_{n \phi} = 0.14832\]
+This means that the control parameters will be:
+\begin{align*}
+k_{p \chi} &= 2 \zeta_{\chi} \omega_{n \chi} \frac{V_g}{g} \\
+k_{i \chi} &= \omega_{n \chi}^2 \frac{V_g}{g}
+\end{align*}
+By trial and error $\zeta = 0.9$ seems like a good value and
+\begin{align*}
+k_{p \chi} &= 4.173 \\
+k_{i \chi} &= 0.3438
+\end{align*}
+The bode plots for the transfer function $\frac{\chi}{\chi^c}$ is as shown in Figure \ref{fig:22}
 
-
+\begin{figure} 
+\centering
+\includegraphics[width=0.9\textwidth]{fig22.eps}
+\caption{Bode plots of $\frac{\chi}{\chi^c}$}
+\label{fig:22}
+\end{figure}
 
 
 \end{document}
